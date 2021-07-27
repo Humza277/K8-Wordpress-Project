@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: minio
+  annotations: 
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+  - host: minio.humza.pentatech.io
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: minio-6065d577c8643ed431548cc0
+            servicePort: 9000

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb-deployment
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: mariadb
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb
+        env:
+          - name: "MYSQL_RANDOM_ROOT_PASSWORD"
+            value: "yes"
+          - name: MYSQL_DATABASE
+            value: "wordpressdb"
+          - name: "MYSQL_USER"
+            value: "wordpress"
+          - name: "MYSQL_PASSWORD"
+            value: "wordpress"
+        ports:
+        - containerPort: 3306 
+          name: mariadb
+        volumeMounts:
+        - name: mariadb-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mariadb-persistent-storage
+        persistentVolumeClaim:
+          claimName: mariadb-pv-claim
