@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: wordpress
+  annotations: 
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+  - host: wordpress.humza.pentatech.io
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: wordpress
+            servicePort: 80
